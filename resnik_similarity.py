@@ -25,34 +25,26 @@ DEBUG = True
 def main():
     context_file = sys.argv[1]
     ic_file = sys.argv[2]
-    print(ic_file)
+    
     
     context = LoadContextFile(context_file)
     brown_ic = wordnet_ic.ic(ic_file)
     
-    results = Process(context, brown_ic)
-    
-    
-    ######
-    #EXAMPLES
-    ######
-    #dog = wn.synset('dog.n.01')
-    #cat = wn.synset('cat.n.01')
-    #Calculate resnik similarity
-    #dog.res_similarity(cat, brown_ic)
+    Process(context, brown_ic)
+
 #==============================================================================    
 #---------------------------------Functions------------------------------------
 #==============================================================================
 ##-------------------------------------------------------------------------
 ## LoadContextFile()
 ##-------------------------------------------------------------------------
-##    Description:        description
+##    Description:      description
 ##
 ##    Arguments:        arguments
 ##
-##    Calls:                calls
+##    Calls:            calls
 ##
-##        Returns:            returns
+##    Returns:          returns
 ##-------------------------------------------------------------------------
 def LoadContextFile(context_file):
     context = []
@@ -70,13 +62,13 @@ def LoadContextFile(context_file):
 ##-------------------------------------------------------------------------
 ## Process()
 ##-------------------------------------------------------------------------
-##    Description:        description
+##    Description:      description
 ##
 ##    Arguments:        arguments
 ##
-##    Calls:                calls
+##    Calls:            calls
 ##
-##        Returns:            returns
+##    Returns:          returns
 ##-------------------------------------------------------------------------
 def Process(context, ic):
     best_senses = []
@@ -106,19 +98,17 @@ def Process(context, ic):
             scores[s] = scores[s] / normalization_factor
     
         print(os.linesep + max(scores.iterkeys(), key=lambda x: scores[x]).name )
-    
-    return results
         
 ##-------------------------------------------------------------------------
 ## Resnik_Similarity()
 ##-------------------------------------------------------------------------
-##    Description:        description
+##    Description:      description
 ##
 ##    Arguments:        arguments
 ##
-##    Calls:                calls
+##    Calls:            calls
 ##
-##        Returns:            returns
+##    Returns:          returns
 ##-------------------------------------------------------------------------
 def ResnikSimilarity(probe_word, context_word, ic):
     probe_senses = wn.synsets(probe_word)
