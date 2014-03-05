@@ -9,7 +9,6 @@ Created on Mar 6, 2014
 from __future__ import print_function
 import os
 import sys
-import math
 from nltk.corpus import wordnet as wn
 from nltk.corpus import wordnet_ic
 from nltk.corpus.reader.wordnet import information_content
@@ -23,6 +22,12 @@ DEBUG = True
 #-----------------------------------Main---------------------------------------
 #==============================================================================
 def main():
+    if len(sys.argv) < 3:
+        print("resnik_similarity.py requires 2 arguments:" + os.linesep +
+              "\t(1) context file" + os.linesep +
+              "\t(2) information content file")
+        sys.exit()
+    
     context_file = sys.argv[1]
     ic_file = sys.argv[2]
     
@@ -38,13 +43,15 @@ def main():
 ##-------------------------------------------------------------------------
 ## LoadContextFile()
 ##-------------------------------------------------------------------------
-##    Description:      description
+##    Description:      Read in a context file, given in the format:
+##                      probe_word context_word_1,context_word_2,context_word_n
 ##
-##    Arguments:        arguments
+##    Arguments:        context_file; file containing probe words and the 
+##                          specified noun contexts
 ##
-##    Calls:            calls
-##
-##    Returns:          returns
+##    Returns:          context; list(), list of tuples of the format:
+##                          (probe_word,context_list), where context_list
+##                          is a list of nouns
 ##-------------------------------------------------------------------------
 def LoadContextFile(context_file):
     context = []
@@ -62,13 +69,19 @@ def LoadContextFile(context_file):
 ##-------------------------------------------------------------------------
 ## Process()
 ##-------------------------------------------------------------------------
-##    Description:      description
+##    Description:      From a given context file, run through each probe
+##                      word, calculating resnik similiarity between that
+##                      probe word and each context word given in the 
+##                      context list. Print the results of said calculations
+##                      and select the best word sense.
 ##
-##    Arguments:        arguments
+##    Arguments:        context; list(), list of tuples of the format:
+##                          (probe_word,context_list), where context_list
+##                          is a list of nouns
+##                      ic; wordnet_ic.ic(); information content created
+##                          by wordnet_ic.ic(), from an ic file.
 ##
-##    Calls:            calls
-##
-##    Returns:          returns
+##    Calls:            ResnikSimilarity()
 ##-------------------------------------------------------------------------
 def Process(context, ic):
     best_senses = []
@@ -102,13 +115,16 @@ def Process(context, ic):
 ##-------------------------------------------------------------------------
 ## Resnik_Similarity()
 ##-------------------------------------------------------------------------
-##    Description:      description
+##    Description:      Calculate resnik similarity score for two words
 ##
-##    Arguments:        arguments
+##    Arguments:        probe_word; the probe word
+##                      context_word; the contextual comparision word
+##                      ic; wordnet_ic.ic() 
 ##
-##    Calls:            calls
-##
-##    Returns:          returns
+##    Returns:          mis; tuple(), a tuple of the format:
+##                          (synset, score), where synset is the most
+##                          informative subsumer of the probe and context 
+##                          words, and score is the resnik similarity score
 ##-------------------------------------------------------------------------
 def ResnikSimilarity(probe_word, context_word, ic):
     probe_senses = wn.synsets(probe_word)
@@ -134,7 +150,6 @@ def ResnikSimilarity(probe_word, context_word, ic):
     
     return mis
 
-    
 #==============================================================================    
 #------------------------------------------------------------------------------
 #==============================================================================
