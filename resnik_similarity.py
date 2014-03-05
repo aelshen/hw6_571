@@ -86,6 +86,7 @@ def LoadContextFile(context_file):
 def Process(context, ic):
     best_senses = []
     results = []
+    
     for i in xrange( len(context) ):
         normalization_factor = 0.0
         scores = defaultdict(float)
@@ -100,7 +101,7 @@ def Process(context, ic):
                 normalization_factor += similarity
                 
                 for sense in wn.synsets(probe_word):
-                    if mis in mis.common_hypernyms(sense):
+                    if mis in sense.common_hypernyms(sense):
                         scores[sense] += similarity
                     
             else:
@@ -113,7 +114,7 @@ def Process(context, ic):
         print(os.linesep + max(scores.iterkeys(), key=lambda x: scores[x]).name )
         
 ##-------------------------------------------------------------------------
-## Resnik_Similarity()
+## ResnikSimilarity()
 ##-------------------------------------------------------------------------
 ##    Description:      Calculate resnik similarity score for two words
 ##
@@ -121,7 +122,9 @@ def Process(context, ic):
 ##                      context_word; the contextual comparision word
 ##                      ic; wordnet_ic.ic() 
 ##
-##    Returns:          mis; tuple(), a tuple of the format:
+##    Returns:          None; returns None if context_word is not found in 
+##                          in Wordnet
+##                      mis; tuple(), a tuple of the format:
 ##                          (synset, score), where synset is the most
 ##                          informative subsumer of the probe and context 
 ##                          words, and score is the resnik similarity score
