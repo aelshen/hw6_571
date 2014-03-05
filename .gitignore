@@ -4,3 +4,7 @@
 .pydevproject
 
 *.pyc
+
+.DS_Store
+
+ic-brown-resnik-add1.dat
