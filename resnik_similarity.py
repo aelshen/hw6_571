@@ -25,7 +25,7 @@ DEBUG = True
 def main():
     context_file = sys.argv[1]
     ic_file = sys.argv[2]
-    
+    print(ic_file)
     
     context = LoadContextFile(context_file)
     brown_ic = wordnet_ic.ic(ic_file)
